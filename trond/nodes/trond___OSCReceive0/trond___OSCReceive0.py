@@ -40,10 +40,7 @@ class OSCReceive_NodeInstance(NodeInstance):
         self.dispatcher.set_default_handler(self.default_handler)
         self.server = None
         self.lock = False
-        print("init, inputs:")
-        print(self.inputs)
-        for ii in range(len(self.inputs)):
-            print(self.input(ii))
+        self.outdict = {}
         #self.server = osc_server.ThreadingOSCUDPServer(
         #        (self.ip, self.port), self.dispatcher)
         # self.special_actions['action name'] = {'method': M(self.action_method)}
