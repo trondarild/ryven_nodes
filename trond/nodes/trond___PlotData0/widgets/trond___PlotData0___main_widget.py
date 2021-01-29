@@ -47,7 +47,7 @@ background-color: transparent;
     def redraw(self, data, val_range, marker):
         self.ax.clear()
         for row in data:
-            if not isinstance(val_range, type(None)):
+            if not isinstance(val_range, type(None)) and val_range!="":
                 self.ax.set_ylim(val_range)
             if not isinstance(marker, type(None)):
                 self.ax.plot(row, marker, label=row)
