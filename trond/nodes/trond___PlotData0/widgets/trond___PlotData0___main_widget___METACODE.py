@@ -1,10 +1,15 @@
+
+
 from NIWENV import *
+
 
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 # from PySide2.QtCore import ...
 # from PySide2.QtGui import ...
 
+
 import numpy as np
+
 
 # import matplotlib
 # import matplotlib.pyplot as plt
@@ -14,12 +19,13 @@ from matplotlib.figure import Figure
 from qbstyles import mpl_style
 
 
+
 class PlotData_NodeInstance_MainWidget(QWidget, MWB):
     def __init__(self, params):
         MWB.__init__(self, params)
         QWidget.__init__(self)
-
         
+
 
         self.setStyleSheet('''
 background-color: transparent;
@@ -32,19 +38,28 @@ background-color: transparent;
         self.setFixedHeight(300)
         self.ax = self.canvas.figure.subplots()
 
+
         #fig = Figure(figsize=(5, 4), dpi=100)
         #fig.add_subplot(111).plot([0,1,2,3,4], [10,1,20,3,40])
 
 
-    def redraw(self, data):
+
+    def redraw(self, data, val_range, marker):
         self.ax.clear()
         for row in data:
-            self.ax.plot(row, label=row)
+            if not isinstance(val_range, type(None)) and val_range!="":
+                self.ax.set_ylim(val_range)
+            if not isinstance(marker, type(None)):
+                self.ax.plot(row, marker, label=row)
+            else:
+                self.ax.plot(row, label=row)
         self.ax.figure.canvas.draw()
         #self.ax.plot.legend(loc='upper left')
 
+
         # TODO
         # return image data
+
 
         #fig = plt.figure()
         #ax = fig.add_subplot(1, 1, 1)
@@ -55,22 +70,28 @@ background-color: transparent;
         #ax.xaxis.set_ticks_position('bottom')
         #ax.yaxis.set_ticks_position('left')
 
+
         # plot the functions
         #plt.plot(x,y, 'c', label='y=sin(x)')
         #plt.plot(x,z, 'm', label='y=cos(x)')
         
         #plt.legend(loc='upper left')
 
+
         # show the plot
         #plt.show()
+
 
     def get_data(self):
         data = {}
         # ...
         return data
 
+
     def set_data(self, data):
         pass
 
+
     def remove_event(self):
         pass
+

@@ -41,6 +41,7 @@ class OSCReceive_NodeInstance(NodeInstance):
         self.server = None
         self.lock = False
         self.outdict = {}
+        self.unhandled = {}
         #self.server = osc_server.ThreadingOSCUDPServer(
         #        (self.ip, self.port), self.dispatcher)
         # self.special_actions['action name'] = {'method': M(self.action_method)}
@@ -48,13 +49,16 @@ class OSCReceive_NodeInstance(NodeInstance):
     def default_handler(self, address, *args):
         # handle addresses
         # look up address and output
-        if(address in self.adr_ix.keys()):
-          self.set_output_val(self.adr_ix[address], args)
+        if(address in self.outdict.keys()):
+            #self.set_output_val(sel, args)
+            self.outdict[address] = args
+          
         else:
-            print(str(address))
-            print(str(args[:5]) + " length: " + str(len(args)))
-            print(self.to_string())
-            print()
+            self.unhandled[address] = len(args)
+            # print(str(address))
+            # print(str(args[:5]) + " length: " + str(len(args)))
+            # print(self.to_string())
+            # print()
         
     def reinit(self, a_port, a_ip, a_addresses):
         self.lock = True
@@ -75,13 +79,13 @@ class OSCReceive_NodeInstance(NodeInstance):
         print("a_addresses="+a_addresses)
         if(isinstance(a_addresses, str) and\
             adrstr != a_addresses):
-            for o in range(len(self.outputs)):
-                print("deleting: " + str(o))
-                try:
-                    self.delete_output(o)
-                except :
-                    # print( sys.exc_value)
-                    print("tried to remove " + str(o))
+            # for o in range(len(self.outputs)):
+            #     print("deleting: " + str(o))
+            #     try:
+            #         self.delete_output(o)
+            #     except :
+            #         # print( sys.exc_value)
+            #         print("tried to remove " + str(o))
             #to_remove = cp.deepcopy(self.addresses)
             #for adr in to_remove:
             #    try:
@@ -96,9 +100,10 @@ class OSCReceive_NodeInstance(NodeInstance):
             print("#1")
             for adr in self.addresses:
                 self.dispatcher.map(adr, self.default_handler)
-                self.create_new_output('data', 'Output_' + str(ctr), pos=ctr)
-                self.adr_ix[adr] = ctr
-                ctr += 1
+                self.outdict[adr] = 0
+                #self.create_new_output('data', 'Output_' + str(ctr), pos=ctr)
+                #self.adr_ix[adr] = ctr
+                #ctr += 1
 
             restart = True
             print("changed addresses")
@@ -128,6 +133,8 @@ class OSCReceive_NodeInstance(NodeInstance):
             #self.server.handle_request()
             self.server.serve()
             # print("clock")
+            self.set_output_val(0, self.outdict)
+            self.set_output_val(1, self.unhandled)
             
 
 
