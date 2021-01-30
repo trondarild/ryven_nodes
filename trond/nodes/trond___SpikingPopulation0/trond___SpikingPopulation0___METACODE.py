@@ -111,7 +111,7 @@ class %CLASS%(NodeInstance):
         #self.log_message('#1', target='global')
         fired = (a_v >= self.threshold)
         #v1[fired] = self.threshold
-        print("v1 = " + str(v1) + "; ac=" + str(a_c))
+        #print("v1 = " + str(v1) + "; ac=" + str(a_c))
         #self.log_message('#2a', target='global')
         v1[fired] = a_c
         #self.log_message('#2b', target='global')
@@ -128,7 +128,7 @@ class %CLASS%(NodeInstance):
                 + np.sum(exc, axis=1) \
                 - np.sum(inh, axis=1)
         
-        print("inpvlt = " + str(inpvlt))
+        #print("inpvlt = " + str(inpvlt))
         i1 = cp.deepcopy(a_i)
         i1 = np.ravel(i1 + inpvlt)
         stepfact = 1.0/self.substeps
@@ -142,7 +142,7 @@ class %CLASS%(NodeInstance):
         fired = (v1>self.threshold)
         v1[fired] = self.threshold
         #self.log_message('#4', target='global')
-        print("v1_2 = " + str(v1))
+        #print("v1_2 = " + str(v1))
         #a_v = cp.deepcopy(v1)
         #a_u = cp.deepcopy(u1)
         return (v1, u1)
@@ -167,14 +167,14 @@ class %CLASS%(NodeInstance):
 
     def update_event(self, input_called=-1):
         # check if type or size has changed
-        self.log_message("inp 0: " + str(self.input(0)), target='global')
-        self.log_message("inp 1: " + str(self.input(1)), target='global')
-        self.log_message("inp 2: " + str(self.input(2)), target='global')
-        self.log_message("inp 3: " + str(self.input(3)), target='global')
-        self.log_message("inp 4: " + str(self.input(4)), target='global')
-        self.log_message("inp 5: " + str(self.input(5)), target='global')
-        self.log_message("inp 6: " + str(self.input(6)), target='global')
-        self.log_message("inp 7: " + str(self.input(7)), target='global')
+        #self.log_message("inp 0: " + str(self.input(0)), target='global')
+        #self.log_message("inp 1: " + str(self.input(1)), target='global')
+        #self.log_message("inp 2: " + str(self.input(2)), target='global')
+        #self.log_message("inp 3: " + str(self.input(3)), target='global')
+        #self.log_message("inp 4: " + str(self.input(4)), target='global')
+        #self.log_message("inp 5: " + str(self.input(5)), target='global')
+        #self.log_message("inp 6: " + str(self.input(6)), target='global')
+        #self.log_message("inp 7: " + str(self.input(7)), target='global')
         
         self.reinit(self.input(self.inp['size']),
                     self.input(self.inp['type'])) # reinit if size changed
@@ -187,24 +187,24 @@ class %CLASS%(NodeInstance):
             dircur = np.reshape(np.array(self.input(self.inp['direct'])), (self.size)) if\
                               not isinstance(self.input(self.inp['direct']), type(None)) else\
                                 np.zeros(self.size)   # todo: convert to array
-            print("dircur: " + str(dircur))
+            #print("dircur: " + str(dircur))
             excitation = self.input(self.inp['exc_top'])\
                         * np.tile(self.input(self.inp['excitation']), (self.size, 1)) if \
                         not isinstance(self.input(self.inp['exc_top']), type(None)) and \
                         not isinstance(self.input(self.inp['excitation']), type(None)) else \
                         np.zeros([1,1])
-            print("excitation: " + str(excitation))
+            #print("excitation: " + str(excitation))
             inhibition = self.input(self.inp['inh_top'])\
                         * np.tile(self.input(self.inp['inhibition']), (self.size, 1)) if \
                         not isinstance(self.input(self.inp['inh_top']), type(None)) and \
                         not isinstance(self.input(self.inp['inhibition']), type(None)) else \
                         np.zeros([1,1])
-            print("inhibition: " + str(inhibition))
+            #print("inhibition: " + str(inhibition))
             internal_syn = self.input(self.inp['int_top'])\
                         * np.tile(self.vlt, (self.size, 1)) if \
                         not isinstance(self.input(self.inp['int_top']), type(None)) else \
                         np.zeros([1,1])
-            print("internal: " + str(internal_syn))
+            #print("internal: " + str(internal_syn))
             (self.vlt, self.u) = self.timestep_Iz(
                                                 self.taurecovery,
                                                 self.coupling,

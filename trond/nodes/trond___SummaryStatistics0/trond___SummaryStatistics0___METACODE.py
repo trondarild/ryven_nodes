@@ -28,18 +28,17 @@ import numpy as np
 class %CLASS%(NodeInstance):
     def __init__(self, params):
         super(%CLASS%, self).__init__(params)
-
         # self.special_actions['action name'] = {'method': M(self.action_method)}
         # ...
 
-	def update_event(self, input_called=-1):
-		if not isinstance(self.input(0), type(None)):
-			data = np.array(self.input(0))
-			axis = 1 if self.input(1)=="" else self.input(1)
-			axis = 1 if len(data.shape)==1 else axis
-			self.set_output_val(0, np.mean(data, axis=axis))
-			self.set_output_val(1, np.median(data, axis=axis))
-			self.set_output_val(2, np.std(data, axis=axis))
+    def update_event(self, input_called=-1):
+        if not isinstance(self.input(0), type(None)):
+            data = np.array(self.input(0))
+            axis = 1 if self.input(1)=="" else self.input(1)
+            axis = 1 if len(data.shape)==1 else axis
+            self.set_output_val(0, np.mean(data, axis=axis))
+            self.set_output_val(1, np.median(data, axis=axis))
+            self.set_output_val(2, np.std(data, axis=axis))
         
 
     def get_data(self):
