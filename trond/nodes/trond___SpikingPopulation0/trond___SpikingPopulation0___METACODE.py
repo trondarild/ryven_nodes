@@ -133,7 +133,7 @@ class %CLASS%(NodeInstance):
         i1 = np.ravel(i1 + inpvlt)
         stepfact = 1.0/self.substeps
         stepfact = 1.0/self.substeps
-        tmp = cp.deepcopy(v1)
+        tmp = max(a_c, cp.deepcopy(v1))
         #self.log_message('#3', target='global')
         for i in range(self.substeps):
             v1 += stepfact*(0.04*tmp**2 + 5*tmp + 140-a_u+i1)
