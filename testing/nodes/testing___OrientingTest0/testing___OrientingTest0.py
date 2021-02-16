@@ -26,10 +26,10 @@ from NIENV import *
 
 import numpy as np
 import math
-class %CLASS%(NodeInstance):
+class OrientingTest_NodeInstance(NodeInstance):
 #class OrientingTest:
     def __init__(self, params):
-        super(%CLASS%, self).__init__(params)
+        super(OrientingTest_NodeInstance, self).__init__(params)
 
         # self.special_actions['action name'] = {'method': M(self.action_method)}
         # ...
