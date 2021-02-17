@@ -24,7 +24,7 @@ from NIENV import *
 
 # --------------------------
 
-
+import numpy as np
 class %CLASS%(NodeInstance):
     def __init__(self, params):
         super(%CLASS%, self).__init__(params)
@@ -44,21 +44,22 @@ class %CLASS%(NodeInstance):
         if input_called == 0:
             # is leakage single or distributed?
             # is growth single or distributed?
-            growth = self.input( self.inp["growth"])
-            leakage = self.input(self.inp["leakage"])
+            growth = float(self.input( self.inp["growth"]))
+            leakage = float(self.input(self.inp["leakage"]))
             inpval = self.input( self.inp["input"])
-            maxval = self.input( self.inp["max"])
-            minval = self.input( self.inp["min"])
+            maxval = float(self.input( self.inp["max"]))
+            minval = float(self.input( self.inp["min"]))
             if(not isinstance(inpval, type(None))):
                 if isinstance(self.store, type(None)):
-                    self.store = growth * inpval
+                    self.store = np.array(growth * inpval)
                 else:
-                    self.store = (1-leakage)*self.store + \
-                        growth * inpval
+                    self.store = np.array((1-leakage)*self.store + \
+                        growth * inpval)
                     if(isinstance(maxval, float)):
-                        self.store = max(maxval, self.store)
+                        
+                        self.store = np.minimum(maxval, self.store)
                     if(isinstance(minval, float)):
-                        self.store = min(minval, self.store)
+                        self.store = np.maximum(minval, self.store)
             self.set_output_val(0, self.store)
 
     def log_inputs(self):

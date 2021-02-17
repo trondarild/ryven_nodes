@@ -1,4 +1,4 @@
-#from NIENV import *
+from NIENV import *
 
 
 # API METHODS --------------
@@ -25,8 +25,8 @@
 # --------------------------
 
 import numpy as np
-#class %CLASS%(NodeInstance):
-class Topology:
+class %CLASS%(NodeInstance):
+#class Topology:
     types = [
         "one_to_one", 
         "nearest_neighbor_1d",
@@ -39,7 +39,7 @@ class Topology:
         "empty"]
 
     def __init__(self, params):
-        #super(%CLASS%, self).__init__(params)
+        super(%CLASS%, self).__init__(params)
 
         # self.special_actions['action name'] = {'method': M(self.action_method)}
         # ...
@@ -125,11 +125,11 @@ class Topology:
     def removing(self):
         pass
 
-if __name__ == '__main__':
-    tst = Topology(params=[])
-    #a  = tst.create_ix_matrix(5,5,1)
-    #a= tst.set_nearest_neighbor(3,3,2)
-    #a = tst.set_circle(5, 5)
-    a = tst.set_random(5,5, 0.3, False)
-    print (a)
+# if __name__ == '__main__':
+#     tst = Topology(params=[])
+#     #a  = tst.create_ix_matrix(5,5,1)
+#     #a= tst.set_nearest_neighbor(3,3,2)
+#     #a = tst.set_circle(5, 5)
+#     a = tst.set_random(5,5, 0.3, False)
+#     print (a)
 

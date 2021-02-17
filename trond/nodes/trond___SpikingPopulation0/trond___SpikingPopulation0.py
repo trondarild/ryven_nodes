@@ -132,8 +132,7 @@ class SpikingPopulation_NodeInstance(NodeInstance):
         i1 = cp.deepcopy(a_i)
         i1 = np.ravel(i1 + inpvlt)
         stepfact = 1.0/self.substeps
-        stepfact = 1.0/self.substeps
-        tmp = max(a_c, cp.deepcopy(v1))
+        tmp = max(a_c, max(cp.deepcopy(v1)))
         #self.log_message('#3', target='global')
         for i in range(self.substeps):
             v1 += stepfact*(0.04*tmp**2 + 5*tmp + 140-a_u+i1)
@@ -141,6 +140,7 @@ class SpikingPopulation_NodeInstance(NodeInstance):
         u1 += a_a*(a_b*v1 - u1)
         fired = (v1>self.threshold)
         v1[fired] = self.threshold
+        v1.shape = (self.size)
         #self.log_message('#4', target='global')
         #print("v1_2 = " + str(v1))
         #a_v = cp.deepcopy(v1)
@@ -192,19 +192,20 @@ class SpikingPopulation_NodeInstance(NodeInstance):
                         * np.tile(self.input(self.inp['excitation']), (self.size, 1)) if \
                         not isinstance(self.input(self.inp['exc_top']), type(None)) and \
                         not isinstance(self.input(self.inp['excitation']), type(None)) else \
-                        np.zeros([1,1])
+                        np.zeros((1, self.size))
             #print("excitation: " + str(excitation))
             inhibition = self.input(self.inp['inh_top'])\
                         * np.tile(self.input(self.inp['inhibition']), (self.size, 1)) if \
                         not isinstance(self.input(self.inp['inh_top']), type(None)) and \
                         not isinstance(self.input(self.inp['inhibition']), type(None)) else \
-                        np.zeros([1,1])
+                        np.zeros((1, self.size))
             #print("inhibition: " + str(inhibition))
             internal_syn = self.input(self.inp['int_top'])\
                         * np.tile(self.vlt, (self.size, 1)) if \
                         not isinstance(self.input(self.inp['int_top']), type(None)) else \
-                        np.zeros([1,1])
+                        np.zeros((1, self.size))
             #print("internal: " + str(internal_syn))
+            self.vlt.shape = (self.size)
             (self.vlt, self.u) = self.timestep_Iz(
                                                 self.taurecovery,
                                                 self.coupling,

@@ -25,7 +25,7 @@ from NIENV import *
 # --------------------------
 
 import numpy as np
-
+import copy as cp
 class MatrixToImage_NodeInstance(NodeInstance):
     def __init__(self, params):
         super(MatrixToImage_NodeInstance, self).__init__(params)
@@ -34,8 +34,11 @@ class MatrixToImage_NodeInstance(NodeInstance):
         # ...
 
     def update_event(self, input_called=-1):
-        m = self.input(0)
+        m = cp.deepcopy(self.input(0)) # otherwise change input
         s = m.shape
+        if len(s) == 1: 
+            m.shape = (s[0],1)
+            s = m.shape
         img = np.zeros([s[0], s[1], 3])
         m_norm = 255*m/np.max(m)
         img[:,:,0] = m_norm[:,:]/3.0
