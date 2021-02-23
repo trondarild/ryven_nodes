@@ -34,8 +34,8 @@ class %CLASS%(NodeInstance):
         self.input_names={
             "excitation":1,
             "inhbition":2,
-            "ex_top":3
-            "inh_top":4
+            "ex_top":3,
+            "inh_top":4,
             "size":5,
             "bias":6,
             "act_scale":7,
