@@ -41,8 +41,26 @@ class %CLASS%(NodeInstance):
             "act_scale":7,
             "adaptation":8
         }
+        self.default_vals = {
+            "size":1,
+            "bias":0,
+            "act_scale":1,
+            "adaptation":0.1
+        
+        }
         self.size = 1
         self.activity = np.zeros(self.size)
+
+    def get_value(val_name):
+        val = self.input(self.input_names[val_name])
+        return self.default_vals[val_name] if val == '' or val == None
+        
+    def activate(self, a):
+        return self.relu(a)
+    def relu(self, a):
+        filter = a > 0
+        retval = filter * a
+        return retval
 
     def update_event(self, input_called=-1):
         if input_called==0:
@@ -51,12 +69,24 @@ class %CLASS%(NodeInstance):
             inh = self.input(self.input_names["inhibition"])
             ex_top = self.input(self.input_names["ex_top"])
             inh_top = self.input(self.input_names["inh_top"])
-            size = self.input(self.input_names["size"])
-            bias = self.input(self.input_names["bias"])
-            act_scale = self.input(self.input_names["act_scale"])
-            adapt = self.input(self.input_names["adaptation"])
+            size = self.get_value("size")
+            bias = self.get_value("bias")
+            act_scale = self.get_value("act_scale")
+            adapt = self.get_value("adaptation")
+            exc_sum = 0
+            inh_sum = 0
 
-            self.set_output_val(0, self.activity)
+            if(exc != None and ex_top != None):
+                exc_sum = np.dot(ex_top, exc)
+            if(inh != None and inh_top != None):
+                inh_sum = np.dot(inh_top, inh)
+
+            a = exc_sum
+            a = a - inh_sum
+            self.activity = self.activity + self.adaptation * (a - self.activity)'
+            a_final = bias + act_scale * self.activate(self.activity)
+
+            self.set_output_val(0, a_final)
         pass  # ...
 
     def get_data(self):
