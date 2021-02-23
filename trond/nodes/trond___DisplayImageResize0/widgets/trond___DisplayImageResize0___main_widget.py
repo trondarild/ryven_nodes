@@ -27,11 +27,13 @@ class DisplayImageResize_NodeInstance_MainWidget(QLabel, MWB):
         h, w, ch = rgb_image.shape
         bytes_per_line = ch * w
         qt_image = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
-        img_w = min(self.maxsize[1], qt_image.width())
-        img_h = min(self.maxsize[0], qt_image.height())
+        img_w = self.maxsize[0] #min(self.maxsize[1], qt_image.width())
+        img_h = self.maxsize[1] #min(self.maxsize[0], qt_image.height())
+        # print("img: " + str(img_w) + ", " + str(img_h))
         proportion = img_w / img_h
-        self.resize(self.width() * proportion, self.height())
-        qt_image = qt_image.scaled(self.width(), self.height())
+        #self.resize(self.width() * proportion, self.height)
+        self.resize(img_w, img_h)
+        qt_image = qt_image.scaled(img_w, img_h)
         self.setPixmap(QPixmap(qt_image))
         self.parent_node_instance.update_shape()
 
