@@ -38,7 +38,7 @@ class DisplayImageResize_NodeInstance(NodeInstance):
         self.res = self.input(0)
         maxsz = self.input(1)
         if type(maxsz) == int: maxsz = (mazsz, maxsz)
-        if type(maxsz) != type(None):
+        if type(maxsz) != type(None) and maxsz != "":
             self.main_widget.set_max_size(maxsz)
         self.main_widget.show_image(self.res)
         self.set_output_val(0, self.res)
