@@ -33,7 +33,7 @@ class %CLASS%(NodeInstance):
         # ...
         self.input_names={
             "excitation":1,
-            "inhbition":2,
+            "inhibition":2,
             "ex_top":3,
             "inh_top":4,
             "size":5,
@@ -51,9 +51,11 @@ class %CLASS%(NodeInstance):
         self.size = 1
         self.activity = np.zeros(self.size)
 
-    def get_value(val_name):
+    def get_value(self, val_name):
         val = self.input(self.input_names[val_name])
-        return self.default_vals[val_name] if val == '' or val == None
+        return self.default_vals[val_name] \
+            if val == '' or val == None \
+            else val
         
     def activate(self, a):
         return self.relu(a)
@@ -76,18 +78,19 @@ class %CLASS%(NodeInstance):
             exc_sum = 0
             inh_sum = 0
 
-            if(exc != None and ex_top != None):
+            if type(exc) != type(None) and type(ex_top) != type(None):
                 exc_sum = np.dot(ex_top, exc)
-            if(inh != None and inh_top != None):
+            # else: exc_sum = exc
+            if type(inh) != type(None) and type(inh_top) != type(None):
                 inh_sum = np.dot(inh_top, inh)
 
             a = exc_sum
             a = a - inh_sum
-            self.activity = self.activity + self.adaptation * (a - self.activity)'
+            self.activity = self.activity + adapt * (a - self.activity)
             a_final = bias + act_scale * self.activate(self.activity)
 
-            self.set_output_val(0, a_final)
-        pass  # ...
+            self.set_output_val(0, np.ravel(a_final))
+       
 
     def get_data(self):
         data = {}
